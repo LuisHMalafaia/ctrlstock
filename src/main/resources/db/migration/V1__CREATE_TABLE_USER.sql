@@ -1,0 +1,7 @@
+CREATE TABLE tb_user(
+	id			INT IDENTITY(1,1)	PRIMARY KEY,
+	name		VARCHAR(50)			NOT NULL,
+	email		VARCHAR(100)		NOT NULL,
+	password	VARCHAR(100)		NOT NULL,
+	role		VARCHAR(20)			NOT NULL
+);
