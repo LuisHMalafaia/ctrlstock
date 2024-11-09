@@ -4,6 +4,7 @@ import br.com.luishmalafaia.ctrlstock.user.dto.LoginRequestDTO;
 import br.com.luishmalafaia.ctrlstock.user.dto.LoginResponseDTO;
 import br.com.luishmalafaia.ctrlstock.user.dto.RegisterRequestDTO;
 import br.com.luishmalafaia.ctrlstock.util.JWTUtil;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,7 +34,7 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody RegisterRequestDTO body){
+    public ResponseEntity register(@RequestBody @Valid RegisterRequestDTO body){
         if(this.userRepository.findByEmail(body.email()).isPresent())
             return ResponseEntity.badRequest().build();
 
@@ -46,7 +47,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody LoginRequestDTO body){
+    public ResponseEntity login(@RequestBody @Valid LoginRequestDTO body){
         User user = this.userRepository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not Found"));
 
         if(passwordEncoder.matches(body.password(), user.getPassword())){
@@ -57,4 +58,8 @@ public class AuthController {
         return ResponseEntity.badRequest().build();
     }
 
+    @PostMapping("/test")
+    public ResponseEntity test(){
+        return ResponseEntity.ok().build();
+    }
 }
